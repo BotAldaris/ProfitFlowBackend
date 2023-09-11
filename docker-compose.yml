@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  profitflowbackend:
+    image: ${DOCKER_REGISTRY-}profitflowbackend
+    build:
+      context: .
+      dockerfile: ProfitFlowBackend/Dockerfile
