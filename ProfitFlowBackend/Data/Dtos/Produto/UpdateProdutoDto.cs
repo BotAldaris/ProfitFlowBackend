@@ -19,4 +19,6 @@ public class UpdateProdutoDto
     public int CategoriaId { get; set; }
     [Required]
     public string UserId { get; set; }
+    [Required]
+    public int Quantidade { get; set; }
 }

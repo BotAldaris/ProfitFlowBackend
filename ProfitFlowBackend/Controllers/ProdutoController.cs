@@ -38,7 +38,8 @@ public class ProdutoController : Controller
         }
         else
         {
-            return Ok(_mapper.Map<ReadProdutoDto>(produto));
+            ReadProdutoDto produtoDto = _mapper.Map<ReadProdutoDto>(produto);
+            return Ok(produtoDto);
         }
     }
     [HttpGet("Quantidade")]
@@ -87,14 +88,14 @@ public class ProdutoController : Controller
         }
         else
         {
-            _mapper.Map(produto, produtoDto);
+            _mapper.Map(produtoDto, produto);
             _context.SaveChanges();
             return NoContent();
         }
     }
     [HttpPatch("{id}")]
     [Authorize]
-    public IActionResult PatchProduto(int id, JsonPatchDocument<UpdateProdutoDto> patch)
+    public IActionResult PatchProduto(int id, [FromBody] JsonPatchDocument<UpdateProdutoDto> patch)
     {
         var userId = User.FindFirst("id")?.Value;
         Produto produto = _context.Produtos.Where(p => p.UserId.Equals(userId)).FirstOrDefault(produto => produto.Id.Equals(id));
@@ -102,7 +103,8 @@ public class ProdutoController : Controller
         {
             return NotFound();
         }
-        var filmeParaAtualizar = _mapper.Map<UpdateProdutoDto>(produto);
+
+        UpdateProdutoDto filmeParaAtualizar = _mapper.Map<UpdateProdutoDto>(produto);
         patch.ApplyTo(filmeParaAtualizar, ModelState);
         if (!TryValidateModel(filmeParaAtualizar))
         {
